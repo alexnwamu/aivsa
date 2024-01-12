@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callChain } from "@/lib/langchain";
 import { Message } from "ai";
-export const runtime = "edge";
 const formatMessage = (message: Message) => {
   return `${message.role === "user" ? "Human" : "Assistant"}: ${
     message.content
