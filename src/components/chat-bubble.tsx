@@ -46,11 +46,11 @@ export function ChatBubble({
           <CardTitle
             className={
               role != "assistant"
-                ? "text-green-400  dark:text-amber-200"
+                ? "  text-red-400  dark:text-amber-200"
                 : "text-blue-500 dark:text-blue-200"
             }
           >
-            {role == "assistant" ? "AI" : "You"}
+            {role == "assistant" ? "BUbot 🤖" : "You"}
           </CardTitle>
         </CardHeader>
         <CardContent className="text-sm">

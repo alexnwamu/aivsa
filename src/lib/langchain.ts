@@ -2,7 +2,6 @@ import { ConversationalRetrievalQAChain } from "langchain/chains";
 import { getVectorStore } from "./vector-store";
 import { getPineconeClient } from "./pinecone-client";
 
-
 import {
   StreamingTextResponse,
   experimental_StreamData,
@@ -16,14 +15,15 @@ type callChainArgs = {
   chatHistory: string;
 };
 
-
-
-export async function callChain({ question, chatHistory }: callChainArgs) {
+export async function callChain(
+  { question, chatHistory }: callChainArgs,
+  nameSpace: string,
+) {
   try {
     // Open AI recommendation
     const sanitizedQuestion = question.trim().replaceAll("\n", " ");
     const pineconeClient = await getPineconeClient();
-    const vectorStore = await getVectorStore(pineconeClient);
+    const vectorStore = await getVectorStore(pineconeClient, nameSpace);
     const { stream, handlers } = LangChainStream({
       experimental_streamData: true,
     });
@@ -39,7 +39,7 @@ export async function callChain({ question, chatHistory }: callChainArgs) {
         questionGeneratorChainOptions: {
           llm: nonStreamingModel,
         },
-      }
+      },
     );
 
     // Question using chat-history
@@ -50,13 +50,13 @@ export async function callChain({ question, chatHistory }: callChainArgs) {
           question: sanitizedQuestion,
           chat_history: chatHistory,
         },
-        [handlers]
+        [handlers],
       )
       .then(async (res) => {
         const sourceDocuments = res?.sourceDocuments;
         const firstTwoDocuments = sourceDocuments.slice(0, 2);
         const pageContents = firstTwoDocuments.map(
-          ({ pageContent }: { pageContent: string }) => pageContent
+          ({ pageContent }: { pageContent: string }) => pageContent,
         );
         console.log("already appended ", data);
         data.append({
@@ -72,3 +72,4 @@ export async function callChain({ question, chatHistory }: callChainArgs) {
     throw new Error("Call chain method failed to execute successfully!!");
   }
 }
+

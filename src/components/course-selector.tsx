@@ -5,9 +5,11 @@ import axios from "axios";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { useCourseContext } from "@/app/contexts/chosencourse-context";
+import { useChosenCourseContext } from "@/app/contexts/chosen-course-data";
 
 const CourseSelector = () => {
   const { isCourseChosen, setIsCourseChosen } = useCourseContext();
+  const { chosenCourse, setChosenCourse } = useChosenCourseContext();
   const [selectedOption, setSelectedOption] = useState("");
   const [courseChosen, setCourseChosen] = useState(false);
   const [dataToSend, setDataToSend] = useState("");
@@ -15,20 +17,14 @@ const CourseSelector = () => {
     setSelectedOption(event.target.value); // Update selectedOption state with the selected value
     console.log(selectedOption);
   };
-  const sendDataToBackend = async () => {
-    const response = await axios.post("/api/selectcourse", {
-      data: dataToSend,
-    });
-
-    if (response.status === 200) {
-      console.log("String data sent successfully!");
-      setCourseChosen(true);
-      setIsCourseChosen(courseChosen);
-      // Handle success, if needed
-    } else {
-      // Handle error
-      console.error("Error:", response.statusText);
-    }
+  const sendDataToBackend = () => {
+    // const response = await axios.post("/api/chat", {
+    //   nameSpace: dataToSend,
+    //   messages: [],
+    // });
+    setChosenCourse(dataToSend);
+    setCourseChosen(true);
+    setIsCourseChosen(courseChosen);
   };
 
   useEffect(() => {
