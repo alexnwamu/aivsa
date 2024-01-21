@@ -8,7 +8,7 @@ import { Spinner } from "./ui/spinner";
 import { useRef, useEffect } from "react";
 import { useChosenCourseContext } from "@/app/contexts/chosen-course-data";
 export function Chat() {
-  const { chosenCourse } = useChosenCourseContext();
+    const {chosenCourse} = useChosenCourseContext()
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       initialMessages,

@@ -1,11 +1,11 @@
-'use client'
+"use client";
 import { Message } from "ai/react";
-import { type ClassValue, clsx } from "clsx"
+import { type ClassValue, clsx } from "clsx";
 import { useState } from "react";
-import { twMerge } from "tailwind-merge"
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 export function formattedText(inputText: string) {
   return inputText
@@ -17,38 +17,33 @@ export function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export const initialMessages: Message[]=[
+export const initialMessages: Message[] = [
   {
     role: "assistant",
-    id: '0',
-    content:"Hi! Im BU bot your virtual study assistant, I am happy to help with questions about your studies"
-  }  
-]
+    id: "0",
+    content:
+      "Hi! Im BU bot your virtual study assistant, I am happy to help with questions about your studies",
+  },
+];
 
-export function scrollToEnd(containerRef: React.RefObject<HTMLElement>){
-
-  if(containerRef.current){
-    const lastMessage= containerRef.current.lastElementChild
-    if(lastMessage){
-      const scrollOptions:ScrollIntoViewOptions ={
+export function scrollToEnd(containerRef: React.RefObject<HTMLElement>) {
+  if (containerRef.current) {
+    const lastMessage = containerRef.current.lastElementChild;
+    if (lastMessage) {
+      const scrollOptions: ScrollIntoViewOptions = {
         behavior: "smooth",
         block: "end",
-
-      }
+      };
       lastMessage.scrollIntoView(scrollOptions);
     }
   }
 }
 
-
-
-
-let storedData: string = ''; // Variable to store the received data
+let storedData: string = ""; // Variable to store the received data
 
 export function processData(data: string): string {
+  data = storedData;
 
-data = storedData
-
-  console.log(storedData)
-return storedData
+  console.log(storedData);
+  return storedData;
 }

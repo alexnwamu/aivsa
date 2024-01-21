@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { useCourseContext } from "@/app/contexts/chosencourse-context";
 import { useChosenCourseContext } from "@/app/contexts/chosen-course-data";
+import Link from "next/link";
 
 const CourseSelector = () => {
   const { isCourseChosen, setIsCourseChosen } = useCourseContext();
@@ -45,6 +46,9 @@ const CourseSelector = () => {
             <option value="seng407">SENG 407</option>
           </select>
           <Button onClick={sendDataToBackend}>Proceed</Button>
+          <Link href={"/chatpdf"}>
+            <Button className="w-full">Chat with your pdf</Button>
+          </Link>
         </div>
       </div>
     </div>
