@@ -42,7 +42,7 @@ const CourseSelector = () => {
             onChange={handleSelectChange}
           >
             <option value="">Select an option</option>
-            <option value="geds400">GEDS 400</option>
+            <option value="itgy400">ITGY 400</option>
             <option value="seng407">SENG 407</option>
           </select>
           <Button onClick={sendDataToBackend}>Proceed</Button>
