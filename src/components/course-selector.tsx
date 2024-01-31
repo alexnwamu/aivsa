@@ -47,7 +47,7 @@ const CourseSelector = () => {
           </select>
           <Button onClick={sendDataToBackend}>Proceed</Button>
           <Link href={"/chatpdf"}>
-            <Button className="w-full">Chat with your pdf</Button>
+            <Button className="w-full">Upload Study Material</Button>
           </Link>
         </div>
       </div>

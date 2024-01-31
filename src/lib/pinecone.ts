@@ -8,13 +8,14 @@ import {
 } from "@pinecone-database/doc-splitter";
 import { getEmbeddings } from "./embeddings";
 import { convertToAscii } from "./convertToascii";
-export const getPineconeClient = () => {
-  return new Pinecone({
-    environment: process.env.PINECONE_ENVIRONMENT!,
-    apiKey: process.env.PINECONE_API_KEY!,
-  });
-};
-
+import { embedAndStoreDocs } from "./vector-store";
+import { getPineconeClient } from "./pinecone-client";
+// export const getPineconeClient = () => {
+//   return new Pinecone({
+//     environment: process.env.PINECONE_ENVIRONMENT!,
+//     apiKey: process.env.PINECONE_API_KEY!,
+//   });
+// };
 type PDFPage = {
   pageContent: string;
   metadata: {
@@ -35,18 +36,15 @@ export async function loadS3IntoPinecone(fileKey: string) {
   const pages = (await loader.load()) as PDFPage[];
   console.log(pages);
   // 2. split and segment the pdf
-  const documents = await Promise.all(pages.map(prepareDocument));
+  const documents = await prepareDocument(pages);
 
   // 3. vectorise and embed individual documents
-  const vectors = await Promise.all(documents.flat().map(embedDocument));
 
   // 4. upload to pinecone
-  const client = await getPineconeClient();
-  const pineconeIndex = await client.index("cosc405");
-  const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
+  const client = await getPineconeClient() 
+  const namespace = convertToAscii(fileKey);
 
-  console.log("inserting vectors into pinecone");
-  await namespace.upsert(vectors);
+  await embedAndStoreDocs(client, documents, namespace);
 
   return documents[0];
 }
@@ -75,19 +73,9 @@ export const truncateStringByBytes = (str: string, bytes: number) => {
   return new TextDecoder("utf-8").decode(enc.encode(str).slice(0, bytes));
 };
 
-async function prepareDocument(page: PDFPage) {
-  let { pageContent, metadata } = page;
-  pageContent = pageContent.replace(/\n/g, "");
+async function prepareDocument(pages: PDFPage[]) {
   // split the docs
   const splitter = new RecursiveCharacterTextSplitter();
-  const docs = await splitter.splitDocuments([
-    new Document({
-      pageContent,
-      metadata: {
-        pageNumber: metadata.loc.pageNumber,
-        text: truncateStringByBytes(pageContent, 36000),
-      },
-    }),
-  ]);
+  const docs = await splitter.splitDocuments(pages);
   return docs;
 }
