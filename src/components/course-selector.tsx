@@ -1,14 +1,13 @@
 "use client";
 import React, { ChangeEvent, FormEvent, useEffect } from "react";
-import axios from "axios";
 
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { useCourseContext } from "@/app/contexts/chosencourse-context";
 import { useChosenCourseContext } from "@/app/contexts/chosen-course-data";
-import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 const CourseSelector = () => {
+    const router = useRouter();
   const { isCourseChosen, setIsCourseChosen } = useCourseContext();
   const { chosenCourse, setChosenCourse } = useChosenCourseContext();
   const [selectedOption, setSelectedOption] = useState("");
@@ -25,30 +24,29 @@ const CourseSelector = () => {
     // });
     setChosenCourse(dataToSend);
     setCourseChosen(true);
-    setIsCourseChosen(courseChosen);
+    setIsCourseChosen(true);
+    router.push("/coursechat");
   };
 
   useEffect(() => {
     setDataToSend(selectedOption);
   }, [selectedOption]);
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-      <div className="border-2 px-4 py-4 rounded-2xl border-black last:">
-        <h2 className="mb-4">What course would you like to study</h2>
-        <div className="flex flex-col gap-4">
-          <select
-            className=" focus:outline-none"
-            value={selectedOption}
-            onChange={handleSelectChange}
-          >
-            <option value="">Select an option</option>
-            <option value="itgy400">ITGY 400</option>
-            <option value="seng407">SENG 407</option>
-          </select>
-          <Button onClick={sendDataToBackend}>Proceed</Button>
-          <Link href={"/chatpdf"}>
-            <Button className="w-full">Upload Study Material</Button>
-          </Link>
+    <div className="">
+      <div className="">
+    <h2 className="font-semibold font-outfit text-[33px] ">Select a course of Study</h2>
+<p className="font-outfit text-[#A0ABBB] mb-[65px] text-[20px] ">What course would you like to study</p>
+    <div className="flex flex-col gap-4">
+        <select
+        className=" focus:outline-none text-[#A0ABBB] bg-transparent  border-[#EEF2F5D9]  p-3 border font-poppins"
+        value={selectedOption}
+        onChange={handleSelectChange}
+        >
+        <option value="" selected disabled>-Select One-</option>
+        <option value="itgy400">ITGY 400</option>
+        <option value="seng407">SENG 407</option>
+        </select>
+        <Button className="font-outfit bg-[#0B2D85] dark:bg-[#2962EF] rounded-lg" onClick={sendDataToBackend}>Proceed</Button>
         </div>
       </div>
     </div>
