@@ -37,10 +37,10 @@ export default function Home() {
               </div>
             </div>
             <div className="w-full flex justify-center items-center mt-[100px]">
-              {theme === "light" ? (
+              {theme === "dark" ? (
                 <div>
                   <Image
-                    src={lighthero}
+                    src={darkhero}
                     alt="lighthero"
                     width={1227}
                     height={710}
@@ -49,7 +49,7 @@ export default function Home() {
               ) : (
                 <div>
                   <Image
-                    src={darkhero}
+                    src={lighthero}
                     alt="darkhero"
                     width={1227}
                     height={710}
