@@ -1,0 +1,19 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - env | grep -e CLERK_SECRET_KEY -e OPENAI_API_KEY -e OPENAI_ORGANIZATION -e PINECONE_NAME_SPACE -e DATABASE_URL -e PINECONE_ENVIRONMENT-e PINECONE_API_KEY -e PINECONE_API_KEY1 -e PINECONE_INDEX_NAME -e INDEX_INIT_TIMEOUT -e PDF_PATH
+        - env | grep -e NEXT_PUBLIC_ >> .env.production
+          - npm run build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - .next/cache/**/*
+      - node_modules/**/*
