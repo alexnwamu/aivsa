@@ -6,7 +6,7 @@ const formatMessage = (message: Message) => {
     message.content
   }`;
 };
-
+//Chat Post
 export async function POST(req: NextRequest) {
   const body = await req.json();
   let nameSpace = "seng407";
