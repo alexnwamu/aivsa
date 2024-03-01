@@ -1,6 +1,6 @@
 import FileUpload from "@/components/FileUpload";
 import React from "react";
-
+//The File Upload Page
 const page = () => {
   return (
     <div className="flex flex-col justify-center items-center  ">
