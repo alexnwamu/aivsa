@@ -47,7 +47,7 @@ export function ChatBubble({
             className={
               role != "assistant"
                 ? "  text-red-400  dark:text-amber-200"
-                : "text-blue-500 dark:text-blue-200"
+                : "text-[#0B2D85] dark:text-[#2962EF]"
             }
           >
             {role == "assistant" ? "BUbot 🤖" : "You"}

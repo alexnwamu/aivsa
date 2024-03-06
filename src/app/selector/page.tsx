@@ -18,7 +18,7 @@ Upload your own material for the AI to answer
         </p>
         <div className="flex flex-col gap-4">
           <Link href="/chatpdf">
-            <button className="font-outfit w-full py-2 bg-[#0B2D85] dark:bg-[#2962EF] rounded-lg">
+            <button className="font-outfit w-full py-2 bg-[#0B2D85] dark:bg-[#2962EF] text-white hover:bg-primary/90 rounded-lg">
               Upload
             </button>
           </Link>

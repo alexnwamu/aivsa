@@ -5,11 +5,18 @@ import React from "react";
 
 type Props = {
   isLoading: boolean;
+  isLoadingChat: boolean;
   messages: Message[];
 };
 
-const MessageList = ({ messages, isLoading }: Props) => {
-        
+const MessageList = ({ messages, isLoadingChat }: Props) => {
+  if (isLoadingChat) {
+    return (
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <Loader2 className="w-6 h-6 animate-spin" />
+      </div>
+    );
+  }
   if (!messages) return <></>;
   return (
     <div className="flex flex-col gap-2 px-4">
@@ -27,7 +34,7 @@ const MessageList = ({ messages, isLoading }: Props) => {
                 "rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10",
                 {
                   "bg-blue-600 text-white": message.role === "user",
-                }
+                },
               )}
             >
               <p>{message.content}</p>
