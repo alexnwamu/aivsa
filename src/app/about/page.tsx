@@ -17,7 +17,7 @@ const page = () => {
           Your AI powered reading companion
         </p>
       </div>
-      <div className="w-full bg-[#E1E7EA] relative h-[552px] overflow-hidden  dark:bg-[#232734]">
+      <div className="w-full bg-[#E1E7EA] relative h-[552px] flex items-center justify-center overflow-hidden  dark:bg-[#232734]">
         <motion.div
           initial={{ y: "50%" }}
           animate={{ y: "0%" }}
