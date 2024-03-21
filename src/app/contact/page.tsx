@@ -3,11 +3,37 @@ import React from "react";
 import { useState } from "react";
 import Link from "next/link";
 const ContactPage = () => {
-  const formData = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
+  const sendEmail = async () => {
+    let dataSend = formData;
+    console.log(dataSend);
+
+    const res = await fetch(`/api/sendemail`, {
+      method: "POST",
+      body: JSON.stringify(dataSend),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      // HANDLING ERRORS
+      .then((res) => {
+        console.log(res);
+        if (res.status > 199 && res.status < 300) {
+          alert("Sent Successfully !");
+        }
+      });
+  };
+
+  const handleSubmit = (e:any) => {
+    e.preventDefault();
+    sendEmail();
+        setFormData({ name: "", email: "", message: "" });
+  };
   return (
     <main>
       <div className="bg-[#F2F7F8] py-[80px] flex items-center flex-col justify-center">
@@ -23,7 +49,8 @@ const ContactPage = () => {
           </p>
         </div>
         <form
-          action=""
+
+                    onSubmit={handleSubmit}
           className="px-[70px] py-[62px] w-[868px] rounded-[16px] bg-white mt-[54px]"
         >
           <p className="text-[#1D2630] font-poppins text-[18px] font-semibold mb-[14px]">
@@ -32,7 +59,10 @@ const ContactPage = () => {
           <input
             type="text"
             name="name"
-                    
+                    value={formData.name}
+            onChange={(e) => {
+              setFormData({ ...formData, name: e.target.value });
+            }}
             className="border mb-[35px]  py-[20px]  bg-transparent px-[16px] w-full rounded-[8px]"
             placeholder="Name"
           />
@@ -42,6 +72,10 @@ const ContactPage = () => {
           <input
             required
             type="email"
+                        value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             name="email"
             className="border mb-[35px]  bg-transparent  border-[rgba(202, 204, 207, 0.85)] py-[20px] px-[16px] w-full rounded-[8px]"
             placeholder="email@email.com"
@@ -51,6 +85,10 @@ const ContactPage = () => {
           </p>
           <textarea
             required
+                        value={formData.message}
+            onChange={(e) =>
+              setFormData({ ...formData, message: e.target.value })
+            }
             name="message"
             className="border h-[234px] mb-[35px] bg-transparent border-[rgba(202, 204, 207, 0.85)] py-[20px] px-[16px] w-full rounded-[8px]"
             placeholder="Type your message"
