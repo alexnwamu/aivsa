@@ -12,4 +12,3 @@ export const nonStreamingModel = new ChatOpenAI({
   verbose: true,
   temperature: 0.5,
 });
-

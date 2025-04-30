@@ -7,7 +7,7 @@ import ChosenCourseContextProvider from "./contexts/chosen-course-data";
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
 import { Toaster } from "react-hot-toast";
-import {Quantico,Poppins,Outfit,} from 'next/font/google'
+import { Quantico, Poppins, Outfit } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "AI Virtual Study Assistant",
@@ -15,27 +15,31 @@ export const metadata: Metadata = {
 };
 
 const quantico = Quantico({
-subsets: ['latin'],
-    
-  weight: ["400","700",],
-variable: '--font-quantico',
-})
+  subsets: ["latin"],
+
+  weight: ["400", "700"],
+  variable: "--font-quantico",
+});
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-    variable: "--font-poppins",
+  variable: "--font-poppins",
 });
 const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-outfit',
-})
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${quantico.variable} ${poppins.variable} ${outfit.variable}`} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${quantico.variable} ${poppins.variable} ${outfit.variable}`}
+      suppressHydrationWarning
+    >
       <head />
       <body>
         <ClerkProvider>
@@ -48,8 +52,13 @@ export default function RootLayout({
                   enableSystem
                   disableTransitionOnChange
                 >
-                  <Navbar />
-                  {children}
+                  <div className="lg:hidden  text-center pt-16  text-3xl">
+                    Mobile Version coming out soon:)
+                  </div>
+                  <div className="hidden lg:block">
+                    <Navbar />
+                    {children}
+                  </div>
                   <Toaster />
                 </ThemeProvider>
               </CourseContextProvider>

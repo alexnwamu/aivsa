@@ -10,12 +10,7 @@ import { getEmbeddings } from "./embeddings";
 import { convertToAscii } from "./convertToascii";
 import { embedAndStoreDocs } from "./vector-store";
 import { getPineconeClient } from "./pinecone-client";
-// export const getPineconeClient = () => {
-//   return new Pinecone({
-//     environment: process.env.PINECONE_ENVIRONMENT!,
-//     apiKey: process.env.PINECONE_API_KEY!,
-//   });
-// };
+
 type PDFPage = {
   pageContent: string;
   metadata: {
@@ -41,7 +36,7 @@ export async function loadS3IntoPinecone(fileKey: string) {
   // 3. vectorise and embed individual documents
 
   // 4. upload to pinecone
-  const client = await getPineconeClient() 
+  const client = await getPineconeClient();
   const namespace = convertToAscii(fileKey);
 
   await embedAndStoreDocs(client, documents, namespace);
@@ -74,8 +69,14 @@ export const truncateStringByBytes = (str: string, bytes: number) => {
 };
 
 async function prepareDocument(pages: PDFPage[]) {
-  // split the docs
   const splitter = new RecursiveCharacterTextSplitter();
   const docs = await splitter.splitDocuments(pages);
-  return docs;
+
+  return docs.map((doc) => ({
+    ...doc,
+    metadata: {
+      ...doc.metadata,
+      text: doc.pageContent, // this is critical for PineconeStore
+    },
+  }));
 }

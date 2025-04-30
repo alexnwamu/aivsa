@@ -12,9 +12,11 @@ const page = () => {
           About Us
         </h1>
         <p className="text-[#84878E] dark:text-[#B3B7BF] font-outfit text-center text-[24px] mt-[44px] max-w-[1000px] mb-[110px]">
-          Your AI powered reading companion, Your AI powered reading companion,
-          Your AI powered reading companion, Your AI powered reading companion,
-          Your AI powered reading companion
+          We’re building the ultimate AI-powered document companion, a smart
+          assistant that transforms how you read, understand, and interact with
+          your PDFs. Whether you're studying, researching, or reviewing
+          important files, our tool is here to make your workflow faster,
+          clearer, and more efficient.
         </p>
       </div>
       <div className="w-full bg-[#E1E7EA] relative h-[552px] flex items-center justify-center overflow-hidden  dark:bg-[#232734]">
@@ -40,7 +42,7 @@ const page = () => {
         </p>
         <div className="flex items-center justify-center w-full container">
           <div className="grid grid-cols-1 lg:grid-cols-3 mt-[58px] gap-[30px] ">
-        <div className="">
+            <div className="">
               <div className="bg-[#EEF1F3] w-[425px] overflow-hidden h-[425px] relative dark:bg-[#232734]">
                 <motion.div
                   initial={{ y: "50%" }}
@@ -70,7 +72,6 @@ const page = () => {
                 </p>
               </div>
             </div>{" "}
-
             <div className="">
               <div className="bg-[#EEF1F3] w-[425px] overflow-hidden h-[425px] relative dark:bg-[#232734]">
                 <motion.div

@@ -6,7 +6,6 @@ import { chats, messages as _messages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { Message } from "ai/react";
-export const runtime = "edge";
 const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
 const openai = new OpenAIApi(configuration);
 export async function POST(req: Request) {
