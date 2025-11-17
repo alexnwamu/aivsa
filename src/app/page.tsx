@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
+import React from "react";
 import { Chat } from "@/components/chat";
 import CourseSelector from "@/components/course-selector";
 import { SignIn, UserButton, auth } from "@clerk/nextjs";
@@ -8,10 +9,46 @@ import { useCourseContext } from "@/app/contexts/chosencourse-context";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { darkhero, lighthero } from "../../assets";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function Home() {
   const { isCourseChosen, setIsCourseChosen } = useCourseContext();
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
+  const [loadingExistingChat, setLoadingExistingChat] = React.useState(false);
+
+  const handleGoToExistingChat = async () => {
+    try {
+      setLoadingExistingChat(true);
+      const res = await axios.get("/api/my-chat");
+      const { chat_id } = res.data as { chat_id?: number };
+      if (chat_id) {
+        router.push(`/chat/${chat_id}`);
+      } else {
+        toast.error("No existing chats found.");
+      }
+    } catch (err: any) {
+      if (axios.isAxiosError(err)) {
+        const status = err.response?.status;
+        const serverMessage = (err.response?.data as any)?.error;
+        if (status === 401) {
+          toast.error("Please sign in to access your chats.");
+        } else if (status === 404) {
+          toast.error("You don't have any chats yet.");
+        } else if (typeof serverMessage === "string") {
+          toast.error(serverMessage);
+        } else {
+          toast.error("Could not load your existing chat.");
+        }
+      } else {
+        toast.error("Could not load your existing chat.");
+      }
+    } finally {
+      setLoadingExistingChat(false);
+    }
+  };
 
   return (
     <main className="relative flex min-h-screen w-full flex-col bg-[#F2F7F8] dark:bg-[#131826]">
@@ -30,11 +67,23 @@ export default function Home() {
                   Your smart assistant for seamless document interaction –
                   simplifying the way you work and study!
                 </p>
-                <Link href="/selector">
-                  <button className="text-white dark:bg-[#2962EF] bg-[#0B2D85] rounded-sm font-outfit font-semibold w-[268px] py-[22px] ">
-                    Get Started
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link href="/selector">
+                    <button className="text-white dark:bg-[#2962EF] bg-[#0B2D85] rounded-sm font-outfit font-semibold w-[268px] py-[22px] ">
+                      Get Started
+                    </button>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleGoToExistingChat}
+                    className="text-[#0B2D85] dark:text-[#2962EF] bg-white dark:bg-transparent border border-[#0B2D85] dark:border-[#2962EF] rounded-sm font-outfit font-semibold w-[268px] py-[22px]"
+                    disabled={loadingExistingChat}
+                  >
+                    {loadingExistingChat
+                      ? "Opening your chat..."
+                      : "Continue existing chat"}
                   </button>
-                </Link>
+                </div>
               </div>
             </div>
             <div className="w-full flex justify-center items-center mt-10 md:mt-[100px] px-4">
