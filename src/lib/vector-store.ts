@@ -34,12 +34,27 @@ export async function embedAndStoreDocs(
   nameSpace?: string,
 ) {
   try {
-    const embeddings = new OpenAIEmbeddings();
+    const embeddings = new OpenAIEmbeddings({
+      modelName: "text-embedding-3-small",
+      openAIApiKey: process.env.OPENAI_API_KEY,
+      batchSize: 128,
+      maxConcurrency: 5,
+    });
     const index = client.index(env.PINECONE_INDEX_NAME);
+
+    console.log("[vector-store] Embedding documents", {
+      docCount: docs.length,
+      indexName: env.PINECONE_INDEX_NAME,
+      namespace: nameSpace,
+    });
 
     const vectors = await embeddings.embedDocuments(
       docs.map((doc) => doc.pageContent),
     );
+
+    console.log("[vector-store] Embeddings created", {
+      vectorCount: vectors.length,
+    });
 
     const records = docs.map((doc, i) => ({
       id: `doc-${i}`,
@@ -47,9 +62,19 @@ export async function embedAndStoreDocs(
       metadata: sanitizeMetadata(doc.metadata || {}),
     }));
 
+    console.log("[vector-store] Upserting records into Pinecone", {
+      recordCount: records.length,
+      namespace: nameSpace,
+    });
+
     await index.namespace(nameSpace!).upsert(records);
+
+    console.log("[vector-store] Upsert complete", {
+      recordCount: records.length,
+      namespace: nameSpace,
+    });
   } catch (error) {
-    console.log("error ", error);
+    console.error("[vector-store] Failed to embed and store docs", error);
     throw new Error("Failed to load your docs!");
   }
 }
@@ -58,9 +83,17 @@ export const courseChoices = ["", ""];
 
 export async function getVectorStore(client: Pinecone, nameSpace: string) {
   try {
-    const embeddings = new OpenAIEmbeddings();
+    const embeddings = new OpenAIEmbeddings({
+      modelName: "text-embedding-3-small",
+      openAIApiKey: process.env.OPENAI_API_KEY,
+      batchSize: 128,
+      maxConcurrency: 5,
+    });
     const index = client.index(env.PINECONE_INDEX_NAME);
-    console.log(nameSpace);
+    console.log("[vector-store] Getting vector store", {
+      indexName: env.PINECONE_INDEX_NAME,
+      namespace: nameSpace,
+    });
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex: index,
       textKey: "text",

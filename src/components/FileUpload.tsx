@@ -50,7 +50,14 @@ const FileUpload = () => {
             console.log(data);
           },
           onError: (err) => {
-            toast.error("Error creating chat");
+            let message = "Error creating chat";
+            if (axios.isAxiosError(err)) {
+              const serverMessage = (err.response?.data as any)?.error;
+              if (typeof serverMessage === "string") {
+                message = serverMessage;
+              }
+            }
+            toast.error(message);
           },
         });
       } catch (err) {

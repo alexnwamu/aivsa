@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai-edge";
+import OpenAI from "openai";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { getContext } from "@/lib/context";
 import { db } from "@/lib/db";
@@ -6,15 +6,42 @@ import { chats, messages as _messages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import { Message } from "ai/react";
-const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
-const openai = new OpenAIApi(configuration);
+import { auth } from "@clerk/nextjs";
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 export async function POST(req: Request) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    }
+
     const { messages, chatId } = await req.json();
+    console.log("[pdfchat] Incoming request", { userId, chatId, messageCount: messages?.length });
     const _chats = await db.select().from(chats).where(eq(chats.id, chatId));
-    if (_chats.length != 1) {
+    if (_chats.length !== 1 || _chats[0].userId !== userId) {
       return NextResponse.json({ error: "Chat not found" }, { status: 404 });
     }
+
+    // Simple per-chat rate limit: max 3 user questions
+    const existingMessages = await db
+      .select()
+      .from(_messages)
+      .where(eq(_messages.chatId, chatId));
+
+    const userMessagesCount = existingMessages.filter(
+      (m) => m.role === "user",
+    ).length;
+
+    if (userMessagesCount >= 3) {
+      return NextResponse.json(
+        {
+          error:
+            "Chat limit reached: you can only ask 3 questions about this PDF.",
+        },
+        { status: 429 },
+      );
+    }
+
     const fileKey = _chats[0].fileKey;
 
     const lastMessage = messages[messages.length - 1];
@@ -33,7 +60,12 @@ If the question is not related to the context , politely respond that you are tu
       `,
     };
 
-    const response = await openai.createChatCompletion({
+    console.log("[pdfchat] Calling OpenAI chat.completions.create", {
+      model: "gpt-3.5-turbo",
+      chatId,
+    });
+
+    const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
         prompt,
@@ -59,6 +91,13 @@ If the question is not related to the context , politely respond that you are tu
         });
       },
     });
+    console.log("[pdfchat] Streaming response for chat", { chatId });
     return new StreamingTextResponse(stream);
-  } catch (error) {}
+  } catch (error) {
+    console.error("[pdfchat] Error handling request", error);
+    return NextResponse.json(
+      { error: "Internal server error while processing PDF chat" },
+      { status: 500 },
+    );
+  }
 }

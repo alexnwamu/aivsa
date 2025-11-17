@@ -1,6 +1,7 @@
 import ChatComponent from "@/components/ChatComponent/page";
 import PDFViewer from "@/components/PDFViewer.tsx/page";
 import ChatSideBar from "@/components/ChatSideBar/page";
+import MobileChatSidebar from "@/components/MobileChatSidebar";
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { auth } from "@clerk/nextjs";
@@ -36,8 +37,10 @@ return redirect("/")
       <div className="hidden lg:block lg:flex-[1] lg:max-w-xs border-r border-slate-200">
         <ChatSideBar chats={_chats} chatId={parseInt(chatId)}  /> 
       </div>
-      {/* main content: pdf + chat */}
+      {/* main content including mobile chats trigger */}
       <div className="flex flex-1 flex-col lg:flex-row">
+        {/* mobile previous chats trigger & drawer */}
+        <MobileChatSidebar chats={_chats} chatId={parseInt(chatId)} />
         {/* pdf viewer */}
         <div className="flex-[3] min-h-0 max-h-full p-4 border-b lg:border-b-0 lg:border-r border-slate-200 overflow-y-auto">
           <PDFViewer pdf_url={currentChat?.pdfUrl || ""} />

@@ -4,6 +4,7 @@ import { loadS3IntoPinecone } from "@/lib/pinecone";
 import { getS3Url } from "@/lib/s3";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
 
 // /api/create-chat
 export async function POST(req: Request, res: Response) {
@@ -14,8 +15,28 @@ export async function POST(req: Request, res: Response) {
   try {
     const body = await req.json();
     const { file_key, file_name } = body;
-    console.log(file_key, file_name);
+    console.log("[create-chat] Incoming request", {
+      file_key,
+      file_name,
+      userId,
+    });
+
+    const existingChats = await db
+      .select()
+      .from(chats)
+      .where(eq(chats.userId, userId));
+
+    if (existingChats.length >= 1) {
+      console.warn("[create-chat] Upload limit reached for user", { userId });
+      return NextResponse.json(
+        { error: "Upload limit reached: you can only upload 1 PDF." },
+        { status: 429 },
+      );
+    }
+
+    console.log("[create-chat] Starting S3→Pinecone pipeline", { file_key });
     await loadS3IntoPinecone(file_key);
+    console.log("[create-chat] Completed S3→Pinecone pipeline", { file_key });
     const chat_id = await db
       .insert(chats)
       .values({

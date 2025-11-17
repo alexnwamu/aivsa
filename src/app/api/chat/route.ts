@@ -13,7 +13,10 @@ export async function POST(req: NextRequest) {
   nameSpace = body.nameSpace;
 
   const messages: Message[] = body.messages ?? [];
-  console.log("Messages ", messages);
+  console.log("[chat] Incoming request", {
+    nameSpace,
+    messageCount: messages.length,
+  });
   const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
   const question = messages[messages.length - 1].content;
 

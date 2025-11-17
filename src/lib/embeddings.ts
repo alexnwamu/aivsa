@@ -1,10 +1,8 @@
-import { OpenAIApi, Configuration } from "openai-edge";
+import OpenAI from "openai";
 
-const config = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(config);
 
 export async function getEmbeddings(text: string) {
   if (!text || text.trim().length === 0) {
@@ -12,21 +10,22 @@ export async function getEmbeddings(text: string) {
   }
 
   try {
-    const response = await openai.createEmbedding({
-      model: "text-embedding-3-small", // <-- Updated model
+    console.log("[embeddings] getEmbeddings called", {
+      textLength: text.length,
+    });
+    const result = await openai.embeddings.create({
+      model: "text-embedding-3-small",
       input: text.replace(/\n/g, " "),
     });
 
-    const result = await response.json();
-
     if (!result?.data?.[0]?.embedding) {
-      console.error("Embedding API did not return data:", result);
+      console.error("[embeddings] Embedding API did not return data", result);
       throw new Error("No embedding returned from Embeddings API");
     }
 
     return result.data[0].embedding as number[];
   } catch (error) {
-    console.error("Error calling embeddings API:", error);
+    console.error("[embeddings] Error calling embeddings API", error);
     throw error;
   }
 }

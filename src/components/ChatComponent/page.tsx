@@ -6,6 +6,7 @@ import { useChat } from "ai/react";
 import { Button } from "../ui/button";
 import { Send } from "lucide-react";
 import MessageList from "../MessageList.tsx/page";
+import { toast } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Message } from "ai";
@@ -28,6 +29,22 @@ queryFn: async () => {
             chatId
         },
         initialMessages: data || [],
+        onResponse: async (response) => {
+          if (!response.ok) {
+            try {
+              const payload = await response.json();
+              const message =
+                typeof payload?.error === "string"
+                  ? payload.error
+                  : "Error while chatting with this PDF";
+              toast.error(message);
+            } catch (err) {
+              toast.error("Error while chatting with this PDF");
+            }
+
+            throw new Error(`Request failed with status ${response.status}`);
+          }
+        },
     });
 
     React.useEffect(()=>{
