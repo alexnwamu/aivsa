@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { chats, messages as _messages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { Message } from "ai/react";
+import type { Message } from "ai";
 import { auth } from "@clerk/nextjs";
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 export async function POST(req: Request) {
@@ -83,7 +83,9 @@ If the question is not related to the context , politely respond that you are tu
       stream: true,
     });
 
-    const stream = OpenAIStream(response, {
+    // Cast response to any to satisfy the OpenAIStream typings when using the
+    // official OpenAI SDK streaming type on Vercel.
+    const stream = OpenAIStream(response as any, {
       onStart: async () => {
         //save user message into db
         await db.insert(_messages).values({

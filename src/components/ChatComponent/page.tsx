@@ -29,7 +29,7 @@ queryFn: async () => {
             chatId
         },
         initialMessages: data || [],
-        onResponse: async (response) => {
+        onResponse: async (response: Response) => {
           if (!response.ok) {
             try {
               const payload = await response.json();
