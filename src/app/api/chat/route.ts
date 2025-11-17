@@ -27,6 +27,18 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const promptChars = formattedPreviousMessages.join("\n").length +
+      question.length;
+    const estimatedPromptTokens = Math.round(promptChars / 4);
+    const INPUT_RATE = 0.15 / 1_000_000; // gpt-4o-mini input $/token
+    const estimatedInputCostUsd = +(
+      estimatedPromptTokens * INPUT_RATE
+    ).toFixed(6);
+    console.log("[chat] Prompt token estimate", {
+      nameSpace,
+      estimatedPromptTokens,
+      estimatedInputCostUsd,
+    });
     const streamingTextResponse = callChain(
       {
         question,

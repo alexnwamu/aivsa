@@ -46,6 +46,15 @@ export async function POST(req: Request) {
 
     const lastMessage = messages[messages.length - 1];
     const context = await getContext(lastMessage.content, fileKey);
+    const questionChars = lastMessage.content.length;
+    const contextChars = context.length;
+    const estimatedPromptTokens = Math.round((questionChars + contextChars) / 4);
+    console.log("[pdfchat] Prompt token estimate", {
+      chatId,
+      questionChars,
+      contextChars,
+      estimatedPromptTokens,
+    });
     const prompt = {
       role: "system",
       content: `You are an enthusiastic AI virtual study assistant. Use the following pieces of context to answer the user.
@@ -61,12 +70,12 @@ If the question is not related to the context , politely respond that you are tu
     };
 
     console.log("[pdfchat] Calling OpenAI chat.completions.create", {
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o-mini",
       chatId,
     });
 
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o-mini",
       messages: [
         prompt,
         ...messages.filter((message: Message) => message.role == "user"),
@@ -88,6 +97,21 @@ If the question is not related to the context , politely respond that you are tu
           chatId,
           role: "system",
           content: completion,
+        });
+
+        const completionTokens = Math.round(completion.length / 4);
+        const INPUT_RATE = 0.15 / 1_000_000; // gpt-4o-mini input $/token
+        const OUTPUT_RATE = 0.6 / 1_000_000; // gpt-4o-mini output $/token
+        const estimatedInputCost = estimatedPromptTokens * INPUT_RATE;
+        const estimatedOutputCost = completionTokens * OUTPUT_RATE;
+        const estimatedTotalCostUsd = +(
+          estimatedInputCost + estimatedOutputCost
+        ).toFixed(6);
+        console.log("[pdfchat] Token and cost estimate", {
+          chatId,
+          estimatedPromptTokens,
+          completionTokens,
+          estimatedTotalCostUsd,
         });
       },
     });

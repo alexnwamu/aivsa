@@ -35,8 +35,11 @@ export async function POST(req: Request, res: Response) {
     }
 
     console.log("[create-chat] Starting S3→Pinecone pipeline", { file_key });
-    await loadS3IntoPinecone(file_key);
-    console.log("[create-chat] Completed S3→Pinecone pipeline", { file_key });
+    const embeddingStats = await loadS3IntoPinecone(file_key);
+    console.log("[create-chat] Completed S3→Pinecone pipeline", {
+      file_key,
+      embeddingStats,
+    });
     const chat_id = await db
       .insert(chats)
       .values({
@@ -52,6 +55,7 @@ export async function POST(req: Request, res: Response) {
     return NextResponse.json(
       {
         chat_id: chat_id[0].insertedId,
+        embedding: embeddingStats,
       },
       { status: 200 },
     );

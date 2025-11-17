@@ -10,6 +10,7 @@ import { getEmbeddings } from "./embeddings";
 import { convertToAscii } from "./convertToascii";
 import { embedAndStoreDocs } from "./vector-store";
 import { getPineconeClient } from "./pinecone-client";
+import { env } from "./config";
 
 type PDFPage = {
   pageContent: string;
@@ -21,6 +22,31 @@ type PDFPage = {
 export async function loadS3IntoPinecone(fileKey: string) {
   // 1. obtain the pdf -> download and read from pdf
   console.log("[pinecone] Starting loadS3IntoPinecone", { fileKey });
+
+  const client = await getPineconeClient();
+  const namespace = convertToAscii(fileKey);
+  const index = client.index(env.PINECONE_INDEX_NAME);
+
+  // Check if this namespace already has vectors; if so, skip re-embedding
+  try {
+    const stats = await index.describeIndexStats();
+    const existingCount = stats.namespaces?.[namespace]?.recordCount ?? 0;
+    if (existingCount > 0) {
+      console.log(
+        "[pinecone] Namespace already indexed, skipping re-embedding",
+        { namespace, existingCount },
+      );
+      return {
+        firstDocument: null,
+        totalDocs: 0,
+        estimatedTokens: 0,
+        estimatedCostUsd: 0,
+      };
+    }
+  } catch (err) {
+    console.warn("[pinecone] describeIndexStats failed, continuing", err);
+  }
+
   console.log("[pinecone] Downloading from S3 to file system...");
   const file_name = await downloadFromS3(fileKey);
   if (!file_name) {
@@ -38,14 +64,27 @@ export async function loadS3IntoPinecone(fileKey: string) {
   const documents = await prepareDocument(pages);
   console.log("[pinecone] Documents prepared", { docCount: documents.length });
 
+  // Estimate embedding token usage & cost for this PDF
+  const totalChars = documents.reduce(
+    (sum, doc) => sum + (doc.pageContent?.length || 0),
+    0,
+  );
+  const estimatedTokens = Math.round(totalChars / 4);
+  // text-embedding-3-small is ~$0.02 per 1M tokens
+  const EMBEDDING_RATE_PER_TOKEN = 0.02 / 1_000_000;
+  const estimatedCostUsd = +(estimatedTokens * EMBEDDING_RATE_PER_TOKEN).toFixed(6);
+  console.log("[pinecone] Embedding token estimate", {
+    totalChars,
+    estimatedTokens,
+    estimatedCostUsd,
+  });
+
   // 3. vectorise and embed individual documents
 
   // 4. upload to pinecone
-  const client = await getPineconeClient();
-  const namespace = convertToAscii(fileKey);
   console.log("[pinecone] Embedding and storing docs in Pinecone", {
     namespace,
-    indexName: process.env.PINECONE_INDEX_NAME,
+    indexName: env.PINECONE_INDEX_NAME,
   });
 
   await embedAndStoreDocs(client, documents, namespace);
@@ -56,7 +95,12 @@ export async function loadS3IntoPinecone(fileKey: string) {
     storedDocs: documents.length,
   });
 
-  return documents[0];
+  return {
+    firstDocument: documents[0],
+    totalDocs: documents.length,
+    estimatedTokens,
+    estimatedCostUsd,
+  };
 }
 
 async function embedDocument(doc: Document) {
