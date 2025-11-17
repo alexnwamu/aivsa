@@ -40,7 +40,7 @@ queryFn: async () => {
 
     },[messages])
   return (
-    <div className="relative max-h-screen overflow-scroll" id='message-container'>
+    <div className="relative h-full max-h-screen overflow-y-auto" id='message-container'>
       <div className="sticky top-0 inset-x-0 p-2 h-fit ">
         <h3 className="text-xl font-bold"> Chat</h3>
       </div>

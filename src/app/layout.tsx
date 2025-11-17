@@ -52,12 +52,11 @@ export default function RootLayout({
                   enableSystem
                   disableTransitionOnChange
                 >
-                  <div className="lg:hidden  text-center pt-16  text-3xl">
-                    Mobile Version coming out soon:)
-                  </div>
-                  <div className="hidden lg:block">
+                  <div className="min-h-screen flex flex-col">
                     <Navbar />
-                    {children}
+                    <main className="flex-1">
+                      {children}
+                    </main>
                   </div>
                   <Toaster />
                 </ThemeProvider>

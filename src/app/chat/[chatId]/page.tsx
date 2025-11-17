@@ -31,18 +31,19 @@ return redirect("/")
     const currentChat = _chats.find(chat=> chat.id === parseInt(chatId))
   return(
 
-    <div className="flex max-h-screen overflow-scroll">
-      <div className="flex w-full max-h-screen overflow-scroll">
-        {/* chat sidebar */}
-        <div className="flex-[1] max-w-xs">
-           <ChatSideBar chats={_chats} chatId={parseInt(chatId)}  /> 
-        </div>
+    <div className="flex w-full min-h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] overflow-hidden">
+      {/* chat sidebar - desktop only */}
+      <div className="hidden lg:block lg:flex-[1] lg:max-w-xs border-r border-slate-200">
+        <ChatSideBar chats={_chats} chatId={parseInt(chatId)}  /> 
+      </div>
+      {/* main content: pdf + chat */}
+      <div className="flex flex-1 flex-col lg:flex-row">
         {/* pdf viewer */}
-        <div className="max-h-screen p-4 oveflow-scroll flex-[5]">
+        <div className="flex-[3] min-h-0 max-h-full p-4 border-b lg:border-b-0 lg:border-r border-slate-200 overflow-y-auto">
           <PDFViewer pdf_url={currentChat?.pdfUrl || ""} />
         </div>
         {/* chat component */}
-        <div className="flex-[3] border-l-4 border-l-slate-200">
+        <div className="flex-[2] min-h-0 max-h-full border-t lg:border-t-0 lg:border-l-4 border-l-slate-200">
           <ChatComponent chatId={parseInt(chatId)} />
         </div>
       </div>

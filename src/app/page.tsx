@@ -8,21 +8,22 @@ import { useCourseContext } from "@/app/contexts/chosencourse-context";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { darkhero, lighthero } from "../../assets";
+
 export default function Home() {
   const { isCourseChosen, setIsCourseChosen } = useCourseContext();
   const { theme, setTheme } = useTheme();
 
   return (
-    <main className="relative  flex min-h-screen w-full flex-col  bg-[#F2F7F8] dark:bg-[#131826]">
-      <div className="flex  py-4">
+    <main className="relative flex min-h-screen w-full flex-col bg-[#F2F7F8] dark:bg-[#131826]">
+      <div className="flex py-4">
         <div className="w-full mx-auto ">
           <section className="container ">
-            <div className="  mx-auto flex justify-between items-center">
-              <h1 className="md:text-[68px] text-4xl leading-normal text-[#020817] font-outfit dark:text-white font-bold mb-4 ">
+            <div className="mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[68px] leading-tight text-[#020817] font-outfit dark:text-white font-bold mb-4 ">
                 Turn any Boring PDFs <br /> into conversation.
               </h1>
-              <div className="max-w-[563px]">
-                <p className="text-[#84878E] dark:text-[#B3B7BF] font-poppins md:text-[16px] mb-4">
+              <div className="max-w-[563px] mt-4 lg:mt-0">
+                <p className="text-[#84878E] dark:text-[#B3B7BF] font-poppins text-sm sm:text-base md:text-[16px] mb-4">
                   Transform your work and learning experience with our AI
                   Virtual Source Anaylzer! Upload PDFs and chat instantly.{" "}
                   <br />
@@ -36,7 +37,7 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <div className="w-full flex justify-center items-center mt-[100px]">
+            <div className="w-full flex justify-center items-center mt-10 md:mt-[100px] px-4">
               {theme === "dark" ? (
                 <div>
                   <Image
@@ -44,6 +45,7 @@ export default function Home() {
                     alt="lighthero"
                     width={1227}
                     height={710}
+                    className="w-full h-auto max-w-[1227px]"
                   />
                 </div>
               ) : (
@@ -53,31 +55,32 @@ export default function Home() {
                     alt="darkhero"
                     width={1227}
                     height={710}
+                    className="w-full h-auto max-w-[1227px]"
                   />
                 </div>
               )}
             </div>
-            <div className="mt-[150px] w-full">
-              <h3 className="text-[#020817] font-outfit font-bold text-center text-[36px] dark:text-white ">
+            <div className="mt-16 md:mt-[150px] w-full">
+              <h3 className="text-[#020817] font-outfit font-bold text-center text-2xl sm:text-3xl md:text-[36px] dark:text-white ">
                 Features
               </h3>
-              <div className="mt-[60px] flex justify-between w-full  gap-[50px] items-center">
-                <div className=" dark:bg-[#020817] p-[50px] rounded-md max-w-[630px] h-[491px] bg-white">
-                  <h1 className="text-[48px] font-outfit font-bold dark:text-white ">
+              <div className="mt-10 md:mt-[60px] flex flex-col lg:flex-row justify-between w-full gap-6 md:gap-[50px] items-stretch">
+                <div className=" dark:bg-[#020817] p-6 sm:p-8 lg:p-[50px] rounded-md w-full max-w-[630px] bg-white">
+                  <h1 className="text-2xl sm:text-3xl md:text-[32px] lg:text-[48px] font-outfit font-bold dark:text-white ">
                     Seamless Document Integration
                   </h1>
-                  <p className="text-[25px] font-poppins text-[#84878E] mt-2 dark:text-[#B3B7BF]">
+                  <p className="text-base sm:text-lg md:text-xl lg:text-[25px] font-poppins text-[#84878E] mt-2 dark:text-[#B3B7BF]">
                     Upload PDF study materials effortlessly and engage in
                     interactive chats with our AI assistant. Receive
                     personalized explanations and insights, optimizing your
                     learning process.
                   </p>
                 </div>
-                <div className=" dark:bg-[#020817] bg-white p-[50px] max-w-[630px] h-[491px] rounded-md">
-                  <h1 className="text-[48px] font-outfit font-bold dark:text-white ">
+                <div className=" dark:bg-[#020817] bg-white p-6 sm:p-8 lg:p-[50px] w-full max-w-[630px] rounded-md">
+                  <h1 className="text-2xl sm:text-3xl md:text-[32px] lg:text-[48px] font-outfit font-bold dark:text-white ">
                     Smart PDF Conversations
                   </h1>
-                  <p className="text-[25px] font-poppins text-[#84878E] mt-2 dark:text-[#B3B7BF]">
+                  <p className="text-base sm:text-lg md:text-xl lg:text-[25px] font-poppins text-[#84878E] mt-2 dark:text-[#B3B7BF]">
                     Go beyond static reading. Chat directly with your PDFs ,ask
                     questions, extract key points, and understand documents
                     faster with an AI that adapts to your needs.
@@ -89,8 +92,8 @@ export default function Home() {
         </div>
       </div>
       {/*Footer*/}
-      <div className="px-[114px] py-[40px] bg-white dark:bg-[#020817] mt-[101px]">
-        <div className="flex justify-between border-b-[2px] dark:border-b-[#19202F] border-b-[#EBEDF0] pb-5">
+      <div className="px-4 sm:px-8 lg:px-[114px] py-[40px] bg-white dark:bg-[#020817] mt-[101px]">
+        <div className="flex flex-col gap-6 md:flex-row md:justify-between border-b-[2px] dark:border-b-[#19202F] border-b-[#EBEDF0] pb-5">
           <div>
             <Link href="/">
               <h1 className="font-quantico text-[26px]">AI VSA</h1>
@@ -99,13 +102,13 @@ export default function Home() {
               Innovation and technology
             </p>
           </div>
-          <div className="flex gap-[124px] text-[#1D2630] dark:text-white font-semibold text-[18px] font-poppins">
+          <div className="flex gap-6 md:gap-[124px] text-[#1D2630] dark:text-white font-semibold text-[18px] font-poppins mt-4 md:mt-0">
             <Link href="/">About</Link>
             <Link href="/">Contact</Link>
           </div>
         </div>
         <div className="mt-[30px]">
-          <p className="text-[#5F6F81] dark:text-[#B3B7BF] text-[14px] text-right font-poppins">
+          <p className="text-[#5F6F81] dark:text-[#B3B7BF] text-[14px] text-center md:text-right font-poppins">
             © 2024 AI VSA. All rights reserved.
           </p>
         </div>
