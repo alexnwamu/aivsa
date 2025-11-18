@@ -40,10 +40,10 @@ export default function Home() {
         } else if (typeof serverMessage === "string") {
           toast.error(serverMessage);
         } else {
-          toast.error("Could not load your existing chat.");
+          toast.error("Failed to load your existing chat.");
         }
       } else {
-        toast.error("Could not load your existing chat.");
+        toast.error("Failed to load your existing chat.");
       }
     } finally {
       setLoadingExistingChat(false);
@@ -54,20 +54,20 @@ export default function Home() {
     <main className="relative flex min-h-screen w-full flex-col bg-[#F2F7F8] dark:bg-[#131826]">
       <div className="flex py-4">
         <div className="w-full mx-auto ">
-          <section className="container ">
-            <div className="mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[68px] leading-tight text-[#020817] font-outfit dark:text-white font-bold mb-4 ">
+          <section className="container">
+            <div className="mx-auto flex flex-col lg:flex-row  justify-center md:justify-between items-center gap-4 lg:gap-12">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[68px] leading-tight text-[#020817] font-outfit dark:text-white font-bold sm:mb-4 ">
                 Turn any Boring PDFs <br /> into conversation.
               </h1>
               <div className="max-w-[563px] mt-4 lg:mt-0">
-                <p className="text-[#84878E] dark:text-[#B3B7BF] font-poppins text-sm sm:text-base md:text-[16px] mb-4">
+                <p className="text-[#84878E]  p-1.5 dark:text-[#B3B7BF] font-poppins text-sm sm:text-base md:text-[16px] mb-4">
                   Transform your work and learning experience with our AI
                   Virtual Source Anaylzer! Upload PDFs and chat instantly.{" "}
                   <br />
-                  Your smart assistant for seamless document interaction –
+                  Your smart assistant for seamless document interaction 
                   simplifying the way you work and study!
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <Link href="/selector">
                     <button className="text-white dark:bg-[#2962EF] bg-[#0B2D85] rounded-sm font-outfit font-semibold w-[268px] py-[22px] ">
                       Get Started
