@@ -6,7 +6,6 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 
-// /api/create-chat
 export async function POST(req: Request, res: Response) {
   const { userId } = await auth();
   if (!userId) {

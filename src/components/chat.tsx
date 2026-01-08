@@ -8,8 +8,8 @@ import { Spinner } from "./ui/spinner";
 import { useRef, useEffect } from "react";
 import { useChosenCourseContext } from "@/app/contexts/chosen-course-data";
 export function Chat() {
-    //Namespace to be sent to the chat
-    const {chosenCourse} = useChosenCourseContext()
+  //Namespace to be sent to the chat
+  const { chosenCourse } = useChosenCourseContext();
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       initialMessages,
@@ -46,4 +46,3 @@ export function Chat() {
     </div>
   );
 }
-
