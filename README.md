@@ -1,6 +1,6 @@
 # AI Virtual Source Analyzer (AI VSA)
 
-![AI VSA Banner](./assets/lighthero.png)
+
 
 ## 📚 Overview
 
