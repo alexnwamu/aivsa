@@ -1,10 +1,10 @@
-# AI Virtual Source Analyzer (AI VSA)
+# AI Virtual Study Assistant (AI VSA)
 
 
 
 ## 📚 Overview
 
-**AI Virtual Source Analyzer (AI VSA)** is an intelligent educational platform that empowers students to interact with their course materials through AI-powered conversations. Upload PDF documents, and engage in natural, context-aware discussions with an AI assistant that understands your study materials.
+**AI Virtual Study Assistant (AI VSA)** started from a simple problem: as a student, sometimes all you have to study from are your own notes. AI VSA lets you upload your notes and course materials and chat with them directly through AI-powered conversations, so revising is as easy as asking a question.
 
 Transform static PDFs into dynamic learning experiences - ask questions, get explanations, extract key insights, and study smarter, not harder.
 
@@ -394,4 +394,4 @@ For questions, feedback, or support, please contact the development team or open
 
 **Built with ❤️ for students who want to learn smarter**
 
-*AI VSA - Innovation and Technology*
+*AI VSA - Your Virtual Study Assistant*

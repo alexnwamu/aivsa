@@ -13,11 +13,11 @@ const page = () => {
           About Us
         </h1>
         <p className="text-[#84878E] dark:text-[#B3B7BF] font-outfit text-center text-base sm:text-lg md:text-xl lg:text-[24px] mt-4 sm:mt-[44px] max-w-[1000px] mb-10 sm:mb-[110px] px-4">
-          We’re building the ultimate AI-powered document companion, a smart
-          assistant that transforms how you read, understand, and interact with
-          your PDFs. Whether you're studying, researching, or reviewing
-          important files, our tool is here to make your workflow faster,
-          clearer, and more efficient.
+          AI VSA started with a simple problem: as a student, sometimes all
+          you have to study from are your own notes. We built a Virtual Study
+          Assistant that lets you upload your notes and course materials and
+          chat with them directly, so revising is as easy as asking a
+          question.
         </p>
       </div>
       <div className="w-full bg-[#E1E7EA] relative h-[260px] sm:h-[340px] md:h-[420px] lg:h-[552px] flex items-center justify-center overflow-hidden dark:bg-[#232734]">
@@ -36,7 +36,7 @@ const page = () => {
           Our Values
         </h1>
         <p className="text-[#84878E] dark:text-[#B3B7BF]  font-outfit text-center text-base sm:text-lg md:text-xl lg:text-[24px] mt-[25px] px-4">
-          Your AI powered reading companion, Your AI powered reading companion
+          Your Virtual Study Assistant, built by a student, for students.
         </p>
         <div className="flex items-center justify-center w-full container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-10 md:mt-[58px] gap-6 md:gap-[30px] ">
@@ -66,8 +66,8 @@ const page = () => {
                   Innovation
                 </h1>
                 <p className="text-[#84878E] dark:text-[#B3B7BF]  font-outfit text-center text-sm sm:text-base md:text-lg lg:text-[24px] mt-[20px]">
-                  Your AI powered reading companion, Your AI powered reading
-                  companion
+                  We keep finding smarter ways to help you study — from
+                  instant answers to seamless note uploads.
                 </p>
               </div>
             </div>{" "}
@@ -97,8 +97,8 @@ const page = () => {
                   Collaboration
                 </h1>
                 <p className="text-[#84878E] dark:text-[#B3B7BF]  font-outfit text-center text-sm sm:text-base md:text-lg lg:text-[24px] mt-[20px]">
-                  Your AI powered reading companion, Your AI powered reading
-                  companion
+                  Built with feedback from real students who needed a better
+                  way to revise.
                 </p>
               </div>
             </div>{" "}
@@ -128,8 +128,8 @@ const page = () => {
                   Communication
                 </h1>
                 <p className="text-[#84878E] dark:text-[#B3B7BF]  font-outfit text-center text-sm sm:text-base md:text-lg lg:text-[24px] mt-[20px]">
-                  Your AI powered reading companion, Your AI powered reading
-                  companion
+                  Ask questions in plain language and get clear answers back
+                  — no jargon, no fluff.
                 </p>
               </div>
             </div>{" "}
@@ -143,7 +143,7 @@ const page = () => {
               <h1 className="font-quantico text-[26px]">AI VSA</h1>
             </Link>
             <p className="text-[#5F6F81] font-poppins mt-[15px]">
-              Innovation and technology
+              Your Virtual Study Assistant
             </p>
           </div>
           <div className="flex gap-6 sm:gap-[124px] text-[#1D2630] dark:text-white font-semibold text-[18px] font-poppins mt-4 sm:mt-0">
