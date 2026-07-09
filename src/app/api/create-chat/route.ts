@@ -25,10 +25,10 @@ export async function POST(req: Request, res: Response) {
       .from(chats)
       .where(eq(chats.userId, userId));
 
-    if (existingChats.length >= 1) {
+    if (existingChats.length >= 3) {
       console.warn("[create-chat] Upload limit reached for user", { userId });
       return NextResponse.json(
-        { error: "Upload limit reached: you can only upload 1 PDF." },
+        { error: "Upload limit reached: you can only upload 3 PDFs." },
         { status: 429 },
       );
     }
