@@ -17,7 +17,9 @@ const page = (props: Props) => {
           Upload your own material for the AI to answer
         </p>
         <div className="flex flex-col gap-4">
-          <Link href="/chatpdf">
+          {/* prefetch disabled: /chatpdf is auth-protected, so a signed-out
+              prefetch caches a redirect instead of the page */}
+          <Link href="/chatpdf" prefetch={false}>
             <button className="font-outfit w-full py-2 bg-[#0B2D85] dark:bg-[#2962EF] text-white hover:bg-primary/90 rounded-lg">
               Upload
             </button>

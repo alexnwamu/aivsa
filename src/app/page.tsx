@@ -68,7 +68,9 @@ export default function Home() {
                   no more digging through pages to find one paragraph.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <Link href="/selector">
+                  {/* prefetch disabled: /selector is auth-protected, so a
+                      signed-out prefetch caches a redirect instead of the page */}
+                  <Link href="/selector" prefetch={false}>
                     <button className="text-white dark:bg-[#2962EF] bg-[#0B2D85] rounded-sm font-outfit font-semibold w-[268px] py-[22px] ">
                       Get Started
                     </button>
